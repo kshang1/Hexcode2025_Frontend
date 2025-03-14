@@ -2,7 +2,7 @@ import { StockGraph } from "@/components/StockGraph"
 import { RecentInfluential } from "@/components/RecentInfluential"
 import { SearchBar } from "@/components/SearchBar"
 import { StockChips } from "@/components/StockChips"
-
+import ColorPalette from "@/components/ColorPalette"
 export default function Home() {
   return (
     <div className="min-h-screen">
@@ -11,9 +11,10 @@ export default function Home() {
           {/* Main Content - Takes up 8 columns on large screens */}
           <div className="lg:col-span-8 p-8">
             <div className="space-y-6">
+          
               <SearchBar />
               <StockChips />
-              
+              <div className="text-xl font-bold">Trending Now</div>
               {/* Stock Graph Section */}
               <div className="mt-8">
                 <div className="stockgraph">

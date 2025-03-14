@@ -137,7 +137,7 @@ export default function MainChart() {
   )
 
   return (
-    <Card className="border-1">
+    <Card className="">
       <CardContent className="px-2 sm:p-6">
         <ChartContainer
           config={chartConfig}
