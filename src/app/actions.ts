@@ -1,11 +1,10 @@
 import {NextResponse} from "next/server";
 import { DataAPIClient } from '@datastax/astra-db-ts';
+import { env } from "process";
 
 const BASE_API_URL = "https://api.langflow.astra.datastax.com";
 const LANGFLOW_ID = "62470d86-6c8f-459c-8ce6-86f4960f103d";
 const FLOW_ID = "1e3bd3f3-63c3-4e06-9b0a-2fee18d494e1";
-const APPLICATION_TOKEN = "AstraCS:yquupNOKSkKNwuRZiYssCtAz:4889e79c04e20798e6a65831c210edd1160020fc485cab049494cc25a1cad43a";
-
 
 const client = new DataAPIClient(process.env.ASTRA_DB_APPLICATION_TOKEN);
 
@@ -29,7 +28,7 @@ export async function getSummary(message: String) {
         };
 
         const headers = {
-            Authorization: `Bearer ${APPLICATION_TOKEN}`,
+            Authorization: `Bearer ${process.env.ASTRA_DB_APPLICATION_TOKEN}`,
             "Content-Type": "application/json",
         };
 
