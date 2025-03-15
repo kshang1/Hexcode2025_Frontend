@@ -1,12 +1,11 @@
-"use client"
+"use client";
 
 import MainChart from "./MainChart";
 
-export function StockGraph({chartData}: {chartData: any}) {
-
+export function StockGraph({ chartData }: { chartData: any }) {
+  console.log("stock graph", chartData);
   return (
     <div className="w-full shadow-md bg-accent/10 rounded-lg flex flex-col">
-
       <div className="flex justify-between">
         <div className="stock-text-description-left p-8">
           <h2 className="text-2xl font-bold">Apple Inc.</h2>
@@ -18,13 +17,19 @@ export function StockGraph({chartData}: {chartData: any}) {
 
         <div className="flex pt-10 pr-5">
           <img src="/shuffle.svg" alt="shuffle" className="w-4 h-4 mr-2" />
-          <div className="stock-text-description-right text-light text-gray-500 text-xs ">Switch to Popularity View</div>
+          <div className="stock-text-description-right text-light text-gray-500 text-xs ">
+            Switch to Popularity View
+          </div>
         </div>
       </div>
-      
+
       <p className="text-muted-foreground p-5">
-        {chartData ? <MainChart chartData={chartData} /> : <p>Loading chart data...</p>}
+        {chartData ? (
+          <MainChart cd={chartData} />
+        ) : (
+          <p>Loading chart data...</p>
+        )}
       </p>
     </div>
-  )
-} 
+  );
+}

@@ -27,12 +27,12 @@ export default function Home() {
   // Fetch data from the API
   const [chartData, setChartData] = useState([]);
   
-  useEffect(() => {
-    getStockCandles("IBM").then((data) => {
-      console.log(data);
-      setChartData(data);
-    });
-  }, []);
+  // useEffect(() => {
+  //   getStockCandles("IBM").then((data) => {
+  //     console.log(data);
+  //     setChartData(data);
+  //   });
+  // }, []);
 
   return (
     <div className="min-h-screen">
