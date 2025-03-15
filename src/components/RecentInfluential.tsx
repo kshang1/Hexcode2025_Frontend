@@ -4,10 +4,10 @@ import { Bar } from "./Bar"
 
 export function RecentInfluential() {
   const sentimentBreakdown = [
-    { percentage: 35, color: "bg-sidebar-accent-foreground" },  // Dark blue
-    { percentage: 25, color: "bg-muted-foreground" },  // Medium blue
-    { percentage: 25, color: "bg-ring" },  // Light blue
-    { percentage: 15, color: "bg-muted" },  // Very light blue
+    { percentage: 35, color: "bg-sidebar-accent-foreground", sentiment: "Positive" },  // Dark blue
+    { percentage: 25, color: "bg-muted-foreground", sentiment: "Bearish" },  // Medium blue
+    { percentage: 25, color: "bg-ring", sentiment: "Cautious" },  // Light blue
+    { percentage: 15, color: "bg-muted", sentiment: "Negative" },  // Very light blue
   ];
 
   return (
@@ -40,17 +40,40 @@ export function RecentInfluential() {
         
 
         <h2 className="text-xl font-bold mb-6">Recent Influential</h2>
-        <div className="space-y-4">
+        <div className="space-y-4 overflow-y-scroll max-h-[340px]">
             <NewsCard
+            id={1}
             username="@nextjs"
             content="The React Framework - created and maintained by @vercel"
-            date="Joined December 2021"
+            date="2024-04-05"
             avatarUrl=""
             />
             <NewsCard
+            id={2}
             username="@vercel"
             content="Develop. Preview. Ship."
-            date="Joined November 2021"
+            date="2024-04-21"
+            avatarUrl=""
+            />
+            <NewsCard
+            id={3}
+            username="@vercel"
+            content="Develop. Preview. Ship."
+            date="2024-05-07"
+            avatarUrl=""
+            />
+            <NewsCard
+            id={4}
+            username="@vercel"
+            content="Develop. Preview. Ship."
+            date="2024-05-15"
+            avatarUrl=""
+            />
+            <NewsCard
+            id={5}
+            username="@vercel"
+            content="Develop. Preview. Ship."
+            date="2024-06-24"
             avatarUrl=""
             />
         </div>

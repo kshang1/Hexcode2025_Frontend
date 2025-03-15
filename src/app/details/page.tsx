@@ -1,0 +1,64 @@
+import { StockGraph } from "@/components/StockGraph"
+import { RecentInfluential } from "@/components/RecentInfluential"
+import { SearchBar } from "@/components/SearchBar"
+import { StockChips } from "@/components/StockChips"
+import ColorPalette from "@/components/ColorPalette"
+import TopGainer from "@/components/TopGainer"
+
+export const topGainer = {
+  ticker: "AAPL",                     // Stock ticker
+  name: "Apple Inc.",                 // Company name
+  currentPrice: "$180.25",             // Current stock price
+  priceChange: "+$8.50",               // Absolute price change
+  percentageChange: "+4.95%",          // Percentage price change
+  volume: "78.5M",                     // Trading volume
+  sentiment: "🟢 75% Bullish",          // Sentiment score
+  sentimentSource: ["Twitter", "News", "Analyst Ratings"], // Sources of sentiment
+  reason: "Apple announced record iPhone sales",  // Key reason for the price movement
+};
+
+export default function Home() {
+  return (
+    <div className="min-h-screen">
+      <div className="max-w-[1600px] mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* Main Content - Takes up 8 columns on large screens */}
+          <div className="lg:col-span-8 p-8">
+            <div className="space-y-6">
+          
+              <SearchBar />
+              <StockChips />
+              {/* Stock Graph Section */}
+              <div className="mt-8">
+                <div className="stockgraph">
+                  <StockGraph />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Recent Influential Section - Takes up 4 columns on large screens */}
+          <div className="lg:col-span-4 p-8 lg:pl-0">
+            <RecentInfluential />
+          </div>
+
+          {/* Related Stocks Section */}
+          <div className="lg:col-span-12 px-8">
+            <h2 className="text-xl font-semibold mb-4 text-end">Scroll down to see related stocks ↓</h2>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div>
+                <TopGainer title="Similar Performance" data={topGainer} />
+              </div>
+              <div>
+                <TopGainer title="Same Sector" data={topGainer} />
+              </div>
+              <div>
+                <TopGainer title="Similar Market Cap" data={topGainer} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

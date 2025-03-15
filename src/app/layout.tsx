@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { MainNav } from "@/components/nav";
+import { ChartProvider } from "@/context/ChartContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,7 +25,9 @@ export default function RootLayout({
               <MainNav />
             </div>
           </header>
-          <main className="flex-1">{children}</main>
+          <ChartProvider>
+            <main className="flex-1">{children}</main>
+          </ChartProvider>
           <footer>
             <div className="px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl flex h-14 items-center">
               <p className="text-sm text-muted-foreground">

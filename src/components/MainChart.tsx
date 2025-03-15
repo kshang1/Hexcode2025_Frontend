@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
+import { CartesianGrid, Line, LineChart, ReferenceLine, XAxis } from "recharts"
 
 import {
   Card,
@@ -16,6 +16,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+import { useChart } from "@/context/ChartContext"
 const chartData = [
   { date: "2024-04-01", desktop: 222, mobile: 150 },
   { date: "2024-04-02", desktop: 97, mobile: 180 },
@@ -116,17 +117,21 @@ const chartConfig = {
   },
   desktop: {
     label: "Desktop",
-    color: "hsl(var(--chart-1))",
+    color: "#0369a1",
   },
   mobile: {
     label: "Mobile",
-    color: "hsl(var(--chart-2))",
+    color: "#475569",
   },
 } satisfies ChartConfig
 
 export default function MainChart() {
   const [activeChart, setActiveChart] =
     React.useState<keyof typeof chartConfig>("desktop")
+
+  const { hoveredTimestamp } = useChart();
+
+  console.log("Chart hoveredTimestamp:", hoveredTimestamp); // Debug log
 
   const total = React.useMemo(
     () => ({
@@ -141,7 +146,7 @@ export default function MainChart() {
       <CardContent className="px-2 sm:p-6">
         <ChartContainer
           config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
+          className="aspect-auto h-[250px] min-h-[300px] w-full"
         >
           <LineChart
             accessibilityLayer
@@ -188,6 +193,12 @@ export default function MainChart() {
               strokeWidth={2}
               dot={false}
             />
+            {hoveredTimestamp && (
+              <ReferenceLine 
+                x={hoveredTimestamp}
+                strokeWidth={2}
+              />
+            )}
           </LineChart>
         </ChartContainer>
       </CardContent>

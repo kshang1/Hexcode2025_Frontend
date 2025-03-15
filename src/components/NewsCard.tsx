@@ -1,16 +1,54 @@
+"use client"
 import { CalendarDays } from "lucide-react"
 import Image from "next/image"
+import { useChart } from "@/context/ChartContext"
+import { useEffect, useState } from "react"
 
 interface NewsCardProps {
-  username: string
-  content: string
-  date: string
-  avatarUrl: string
+  id: number;
+  username: string;
+  content: string;
+  date: string;  // Format: YYYY-MM-DD
+  avatarUrl: string;
 }
 
-export function NewsCard({ username, content, date, avatarUrl }: NewsCardProps) {
+export function NewsCard({ id, username, content, date, avatarUrl }: NewsCardProps) {
+  const { hoveredTimestamp, setHoveredTimestamp } = useChart();
+  const [currentlyHovered, setCurrentlyHovered] = useState<number | null>(null);
+
+  // Format the display date for UI
+  const formatDisplayDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
+
+  useEffect(() => {
+    console.log('Hovered timestamp:', hoveredTimestamp);
+  }, [hoveredTimestamp]);
+
+  useEffect(() => {
+    console.log('Currently hovered:', currentlyHovered);
+  }, [currentlyHovered]);
+
   return (
-    <div className="flex items-start space-x-4 rounded-lg shadow-sm bg-card p-4">
+    <div 
+      className={`flex items-start space-x-4 rounded-lg shadow-sm p-4 ${
+        currentlyHovered === id ? 'bg-accent' : ''
+      }`} 
+      onMouseEnter={() => {
+        setHoveredTimestamp(date);  // This will be in YYYY-MM-DD format
+        setCurrentlyHovered(id);
+      }} 
+      onMouseLeave={() => {
+        setHoveredTimestamp(null);
+        setCurrentlyHovered(null);
+      }}
+    >
+      
       {avatarUrl ? (
         <Image
           src={avatarUrl}
@@ -33,7 +71,7 @@ export function NewsCard({ username, content, date, avatarUrl }: NewsCardProps) 
         <p className="text-sm text-muted-foreground">{content}</p>
         <div className="flex items-center gap-2 text-muted-foreground">
           <CalendarDays className="h-4 w-4" />
-          <span className="text-xs">{date}</span>
+          <span className="text-xs">{formatDisplayDate(date)}</span>
         </div>
       </div>
     </div>

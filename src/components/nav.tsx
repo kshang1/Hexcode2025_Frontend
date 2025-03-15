@@ -12,10 +12,16 @@ export function MainNav() {
 
         <div className="flex gap-13 p-4">
           <Link
-            href="/about"
+            href="/"
             className="flex items-center text-sm font-medium text-muted-foreground hover:text-foreground"
           >
             Stocks
+          </Link>
+          <Link
+            href="/forecasts"
+            className="flex items-center text-sm font-medium text-muted-foreground hover:text-foreground"
+          >
+            Forecasts
           </Link>
           <Link
             href="/login" 
