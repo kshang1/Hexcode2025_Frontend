@@ -5,6 +5,8 @@ import { Overview } from "@/components/Overview"
 import TopGainer from "@/components/TopGainer"
 import TopNews from "@/components/TopNews"
 import { useRouter } from "next/navigation";
+import { FloatingWidget } from "@/components/FloatingWidget";
+import { useState } from "react";
 
 export const topShifts = [
   { ticker: "AAPL", name: "Apple Inc.", change: "+3.2%", sentiment: "🟢 Bullish (67%)" },
@@ -57,6 +59,8 @@ export default function StocksPage() {
     router.push("/details");
   };
 
+  const [isWidgetExpanded, setIsWidgetExpanded] = useState(false);
+
   return (
     <div className="container mx-auto py-6 space-y-6">
       <div>
@@ -81,9 +85,14 @@ export default function StocksPage() {
 
         <div className="flex flex-col gap-3">
           <Overview title="Top Sentiment Shifts"/>
-          <div className="rounded-lg h-1/2 shadow-md flex flex-col items-start justify-center p-4 cursor-pointer" onClick={toDetails}>
+          <div 
+            className="rounded-lg h-1/2 shadow-md flex flex-col items-start justify-center p-4 cursor-pointer" 
+            onClick={() => setIsWidgetExpanded(true)}
+          >
             <div className="text-4xl font-bold text-black w-full">Ask StockSage.</div>
-            <div className="text-sm text-muted-foreground mt-3">Your AI-powered market assistant for real-time stock insights and sentiment analysis.</div>
+            <div className="text-sm text-muted-foreground mt-3">
+              Your AI-powered market assistant for real-time stock insights and sentiment analysis.
+            </div>
           </div>
         </div>
 
@@ -99,6 +108,8 @@ export default function StocksPage() {
           <TopNews title="Top News" newsTitle={topNews.newsTitle} newsContent={topNews.newsContent} />
         </div>
       </div>
+
+      <FloatingWidget isExpanded={isWidgetExpanded} onClose={() => setIsWidgetExpanded(false)} />
     </div>
   )
 } 

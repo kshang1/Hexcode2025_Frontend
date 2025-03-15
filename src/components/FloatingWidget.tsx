@@ -15,9 +15,20 @@ export const messages = [
   { id: 9, sender: "ai", text: "You're welcome! Let me know if you need any more insights." }
 ];
 
-export function FloatingWidget() {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [inputValue, setInputValue] = useState('');
+interface FloatingWidgetProps {
+  isExpanded?: boolean;
+  onClose?: () => void;
+}
+
+export function FloatingWidget({ isExpanded: propIsExpanded, onClose }: FloatingWidgetProps) {
+  const [isExpandedInternal, setIsExpandedInternal] = useState(false);
+  
+  // Use either prop-controlled or internal state
+  const isExpanded = propIsExpanded ?? isExpandedInternal;
+  const handleClose = () => {
+    onClose?.();
+    setIsExpandedInternal(false);
+  };
 
   useEffect(() => {
     if (isExpanded) {
@@ -29,6 +40,8 @@ export function FloatingWidget() {
       document.body.style.overflow = 'unset';
     };
   }, [isExpanded]);
+
+  const [inputValue, setInputValue] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,7 +63,7 @@ export function FloatingWidget() {
     <>
       <div className="fixed bottom-6 right-6 pointer-events-auto z-10">
         <div
-          onClick={() => setIsExpanded(true)}
+          onClick={() => setIsExpandedInternal(true)}
           className="bg-white rounded-lg shadow-lg p-4 w-[200px] hover:shadow-xl transition-shadow cursor-pointer"
         >
           <h3 className="font-semibold mb-2">StockSage</h3>
@@ -65,7 +78,7 @@ export function FloatingWidget() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/50 z-50"
-            onClick={() => setIsExpanded(false)}
+            onClick={handleClose}
           >
             <motion.div
               initial={{ 
@@ -101,7 +114,7 @@ export function FloatingWidget() {
                   <div className="flex justify-between items-center mb-4">
                     <h2 className="text-xl font-bold">StockSage</h2>
                     <button
-                      onClick={() => setIsExpanded(false)}
+                      onClick={handleClose}
                       className="p-2 hover:bg-gray-100 rounded-full"
                     >
                       <X className="w-5 h-5" />
