@@ -2,7 +2,7 @@
 
 import MainChart from "./MainChart";
 
-export function StockGraph({chartData}: {chartData: any}) {
+export function StockGraph({chartData,hasShuffle}: {chartData: any,hasShuffle: boolean}) {
 
   return (
     <div className="w-full shadow-md bg-accent/10 rounded-lg flex flex-col">
@@ -16,10 +16,10 @@ export function StockGraph({chartData}: {chartData: any}) {
           </div>
         </div>
 
-        <div className="flex pt-10 pr-5">
+        {hasShuffle && <div className="flex pt-10 pr-5">
           <img src="/shuffle.svg" alt="shuffle" className="w-4 h-4 mr-2" />
           <div className="stock-text-description-right text-light text-gray-500 text-xs ">Switch to Popularity View</div>
-        </div>
+        </div>}
       </div>
       
       <p className="text-muted-foreground p-5">

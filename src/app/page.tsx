@@ -75,11 +75,16 @@ export default function StocksPage() {
             </div>
           </div>
           <div className="cursor-pointer" onClick={toDetails}> 
-            <StockGraph />
+            <StockGraph chartData={[]} hasShuffle={false} />
           </div>
         </div>
-        <div>
-          <Overview title="Top Sentiment Shifts" />
+
+        <div className="flex flex-col gap-3">
+          <Overview title="Top Sentiment Shifts"/>
+          <div className="rounded-lg h-1/2 shadow-md flex flex-col items-start justify-center p-4 cursor-pointer" onClick={toDetails}>
+            <div className="text-4xl font-bold text-black w-full">Ask StockSage.</div>
+            <div className="text-sm text-muted-foreground mt-3">Your AI-powered market assistant for real-time stock insights and sentiment analysis.</div>
+          </div>
         </div>
 
         {/* Second row */}

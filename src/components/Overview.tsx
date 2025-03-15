@@ -8,9 +8,7 @@ export const topShifts = [
   { ticker: "AAPL", name: "Apple Inc.", change: "+3.2%", sentiment: "🟢 Bullish (67%)" },
   { ticker: "TSLA", name: "Tesla Inc.", change: "-1.5%", sentiment: "🔴 Bearish (54%)" },
   { ticker: "NVDA", name: "NVIDIA Corporation", change: "+5.1%", sentiment: "🟢 Very Bullish (78%)" },
-  { ticker: "AMZN", name: "Amazon.com Inc.", change: "-2.3%", sentiment: "🔴 Bearish (45%)" },
-  { ticker: "MSFT", name: "Microsoft Corp.", change: "+4.6%", sentiment: "🟢 Bullish (72%)" },
-];
+  ];
 
 export function Overview({ title, children }: OverviewProps) {
   const router = useRouter();

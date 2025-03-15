@@ -109,7 +109,7 @@ export function FloatingWidget() {
                   </div>
 
                   {/* chat history with left scrollbar */}
-                  <div className={`flex-1 overflow-y-scroll ${styles.chatContainer}`}>
+                  <div className={`flex-1 overflow-y-scroll`}>
                     <div className={styles.chatContent}>
                       {messages.map((msg) => (
                         <div

@@ -56,7 +56,6 @@ export default function MainChart() {
     async function fetchChartData() {
       try {
         setIsLoading(true);
-        // Replace this with your actual data fetching logic
         const response = await fetch('/api/chart-data');
         const data = await response.json();
         setChartData(data);

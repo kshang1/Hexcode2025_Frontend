@@ -46,7 +46,7 @@ export default function Home() {
               {/* Stock Graph Section */}
               <div className="mt-8 h-[600px]">
                 <FlipCard
-                  front={<StockGraph chartData={chartData} />}
+                  front={<StockGraph chartData={chartData} hasShuffle={true} />}
                   back={<PopularityGraph />}
                 />
               </div>

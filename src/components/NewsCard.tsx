@@ -28,13 +28,6 @@ export function NewsCard({ id, username, content, date, avatarUrl, significance 
     });
   };
 
-  useEffect(() => {
-    console.log('Hovered timestamp:', hoveredTimestamp);
-  }, [hoveredTimestamp]);
-
-  useEffect(() => {
-    console.log('Currently hovered:', currentlyHovered);
-  }, [currentlyHovered]);
 
   return (
     <div 
