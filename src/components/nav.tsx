@@ -17,12 +17,7 @@ export function MainNav() {
           >
             Stocks
           </Link>
-          <Link
-            href="/forecasts"
-            className="flex items-center text-sm font-medium text-muted-foreground hover:text-foreground"
-          >
-            Forecasts
-          </Link>
+         
           <Link
             href="/login" 
             className="flex items-center text-sm font-medium text-muted-foreground hover:text-foreground"

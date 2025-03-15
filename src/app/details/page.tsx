@@ -1,3 +1,4 @@
+"use client"
 import { StockGraph } from "@/components/StockGraph"
 import { RecentInfluential } from "@/components/RecentInfluential"
 import { SearchBar } from "@/components/SearchBar"
@@ -7,6 +8,8 @@ import TopGainer from "@/components/TopGainer"
 import { FlipCard } from "@/components/FlipCard"
 import { Divide } from "lucide-react"
 import { PopularityGraph } from "@/components/PopularityGraph"
+import { FloatingWidget } from "@/components/FloatingWidget";
+
 export const topGainer = {
   ticker: "AAPL",                     // Stock ticker
   name: "Apple Inc.",                 // Company name
@@ -48,6 +51,8 @@ export default function Home() {
           <div className="lg:col-span-4 p-8 lg:pl-0">
             <RecentInfluential />
           </div>
+
+          <FloatingWidget />
 
           {/* Related Stocks Section */}
           <div className="lg:col-span-12 px-8">
