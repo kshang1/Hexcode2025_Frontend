@@ -6,7 +6,7 @@ export function MainNav() {
       <div className="flex w-full max-w-8xl mx-auto justify-between items-center">
         <div className="flex items-center">
           <Link href="/" className="flex items-center">
-            <span className="inline-block font-extrabold p-4">HEXCODE</span>
+            <span className="inline-block font-extrabold p-4">TRADEINTEL</span>
           </Link>
         </div>
 

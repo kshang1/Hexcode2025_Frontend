@@ -25,18 +25,18 @@ import {
 } from "@/components/ui/select"
 import { PopularityChart } from "./PopularityChart"
 
-export function PopularityGraph() {
+export function PopularityGraph({ companyName, popularityRate, mentions, serachVolume,sentimentPercentage }: { companyName: string, popularityRate: number, mentions: number, serachVolume: number,sentimentPercentage: number }) {
   return (
     <div className="w-full shadow-md bg-accent/10 rounded-lg flex flex-col">
 
       <div className="flex justify-between">
         <div className="stock-text-description-left p-8">
-          <h2 className="text-2xl font-bold">Apple Inc.</h2>
-          <span className="text-3xl font-bold">80.23 ↓</span>
+          <h2 className="text-2xl font-bold">{companyName}</h2>
+          <span className="text-3xl font-bold">{popularityRate}</span>
           <div className="flex flex-colitems-baseline gap-3">
-            <div className="text-muted-foreground text-sm">Mentions: 12.3K Today</div>
-            <div className="text-muted-foreground text-sm">Search Volume: 1.5M</div>
-            <div className="text-muted-foreground text-sm">72% Positive Sentiment</div>
+            <div className="text-muted-foreground text-sm">Mentions: {mentions} Today</div>
+            <div className="text-muted-foreground text-sm">Search Volume: {serachVolume}</div>
+            <div className="text-muted-foreground text-sm">{sentimentPercentage} Positive Sentiment</div>
           </div>
         </div>
 

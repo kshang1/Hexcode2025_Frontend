@@ -7,6 +7,7 @@ import TopNews from "@/components/TopNews"
 import { useRouter } from "next/navigation";
 import { FloatingWidget } from "@/components/FloatingWidget";
 import { useState } from "react";
+import { SearchBar } from "@/components/SearchBar"
 
 export const topShifts = [
   { ticker: "AAPL", name: "Apple Inc.", change: "+3.2%", sentiment: "🟢 Bullish (67%)" },
@@ -68,6 +69,7 @@ export default function StocksPage() {
         <p className="text-muted-foreground">Track and analyze stock performance with real-time data.</p>
       </div>
 
+      <SearchBar />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* First row */}
         <div className="lg:col-span-2">
@@ -95,6 +97,8 @@ export default function StocksPage() {
             </div>
           </div>
         </div>
+        <FloatingWidget isExpanded={isWidgetExpanded} onClose={() => setIsWidgetExpanded(false)}/>
+   
 
         {/* Second row */}
         <div className="cursor-pointer" onClick={toDetails}>
@@ -109,7 +113,6 @@ export default function StocksPage() {
         </div>
       </div>
 
-      <FloatingWidget isExpanded={isWidgetExpanded} onClose={() => setIsWidgetExpanded(false)} />
     </div>
   )
 } 

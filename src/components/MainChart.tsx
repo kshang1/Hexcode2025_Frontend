@@ -117,7 +117,6 @@ export default function MainChart({ cd }: { cd: any }) {
               minTickGap={32}
               tickFormatter={(value) => {
                 const date = new Date(value);
-                console.log(date);
                 return date.toLocaleDateString("en-US", {
                   month: "short",
                   day: "numeric",
