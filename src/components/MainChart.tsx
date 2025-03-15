@@ -25,6 +25,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { useChart } from "@/context/ChartContext";
+import { getStockCandles } from "@/app/alphavantage_actions";
 
 type ChartDataPoint = {
   date: string;
@@ -46,27 +47,20 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export default function MainChart() {
-  const [activeChart, setActiveChart] = React.useState<"desktop" | "mobile">("desktop");
+export default function MainChart({ cd }: { cd: any }) {
+  const [activeChart, setActiveChart] = React.useState<"desktop" | "mobile">(
+    "desktop"
+  );
   const [chartData, setChartData] = React.useState<ChartDataPoint[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const { hoveredTimestamp } = useChart();
 
   React.useEffect(() => {
-    async function fetchChartData() {
-      try {
-        setIsLoading(true);
-        const response = await fetch('/api/chart-data');
-        const data = await response.json();
-        setChartData(data);
-      } catch (error) {
-        console.error('Failed to fetch chart data:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    fetchChartData();
+    getStockCandles("IBM").then((data) => {
+      console.log(data);
+      setChartData(data);
+      setIsLoading(false);
+    });
   }, []);
 
   const total = React.useMemo(() => {
