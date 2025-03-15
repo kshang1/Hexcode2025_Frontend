@@ -8,11 +8,13 @@ interface NewsCardProps {
   id: number;
   username: string;
   content: string;
-  date: string;  // Format: YYYY-MM-DD
+  date: string;  // Format: YYYY-MM-DD to match with the chart data
+  significance: string; //use LOW, MEDIUM, HIGH
   avatarUrl: string;
+
 }
 
-export function NewsCard({ id, username, content, date, avatarUrl }: NewsCardProps) {
+export function NewsCard({ id, username, content, date, avatarUrl, significance }: NewsCardProps) {
   const { hoveredTimestamp, setHoveredTimestamp } = useChart();
   const [currentlyHovered, setCurrentlyHovered] = useState<number | null>(null);
 
@@ -65,8 +67,9 @@ export function NewsCard({ id, username, content, date, avatarUrl }: NewsCardPro
         </div>
       )}
       <div className="flex-1 space-y-1">
-        <div className="flex items-center gap-2">
+        <div className="flex justify-between items-center gap-2">
           <p className="text-sm font-medium">{username}</p>
+          <div className={`h-2 w-2 rounded-full ${significance === "LOW" ? "bg-green-500" : significance === "MEDIUM" ? "bg-yellow-500" : "bg-red-500"}`}></div>
         </div>
         <p className="text-sm text-muted-foreground">{content}</p>
         <div className="flex items-center gap-2 text-muted-foreground">

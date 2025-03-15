@@ -4,7 +4,9 @@ import { SearchBar } from "@/components/SearchBar"
 import { StockChips } from "@/components/StockChips"
 import ColorPalette from "@/components/ColorPalette"
 import TopGainer from "@/components/TopGainer"
-
+import { FlipCard } from "@/components/FlipCard"
+import { Divide } from "lucide-react"
+import { PopularityGraph } from "@/components/PopularityGraph"
 export const topGainer = {
   ticker: "AAPL",                     // Stock ticker
   name: "Apple Inc.",                 // Company name
@@ -29,10 +31,15 @@ export default function Home() {
               <SearchBar />
               <StockChips />
               {/* Stock Graph Section */}
-              <div className="mt-8">
-                <div className="stockgraph">
-                  <StockGraph />
-                </div>
+              <div className="mt-8 h-[600px]">
+                <FlipCard 
+                  front={
+                    <StockGraph />
+                  }
+                  back={
+                    <PopularityGraph />
+                  }
+                />
               </div>
             </div>
           </div>
