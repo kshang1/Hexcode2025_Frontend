@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
+import styles from '@/styles/FloatingWidget.module.css';
 
 export const messages = [
   { id: 1, sender: "ai", text: "Welcome! I can provide stock trends, sentiment analysis, and market updates. How can I assist you with the stock market today?" },
@@ -16,6 +17,7 @@ export const messages = [
 
 export function FloatingWidget() {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
     if (isExpanded) {
@@ -27,6 +29,22 @@ export function FloatingWidget() {
       document.body.style.overflow = 'unset';
     };
   }, [isExpanded]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle the message submission here
+    if (inputValue.trim()) {
+      // Add your message handling logic here
+      setInputValue('');
+    }
+  };
+
+  const handleSendClick = () => {
+    if (inputValue.trim()) {
+      // Add your message handling logic here
+      setInputValue('');
+    }
+  };
 
   return (
     <>
@@ -78,7 +96,6 @@ export function FloatingWidget() {
               className="bg-white rounded-xl overflow-y-auto origin-bottom-right shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* widget content when expanded */}
               <div className="p-6 h-full flex flex-col">
                 <div className="max-w-7xl mx-auto w-full flex flex-col h-full">
                   <div className="flex justify-between items-center mb-4">
@@ -91,31 +108,44 @@ export function FloatingWidget() {
                     </button>
                   </div>
 
-                  {/* chat history */}
-                  <div className="flex-1 overflow-y-scroll">
-                    {messages.map((msg) => (
-                      <div
-                        key={msg.id}
-                        className={`flex max-w-full ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
-                      >
+                  {/* chat history with left scrollbar */}
+                  <div className={`flex-1 overflow-y-scroll ${styles.chatContainer}`}>
+                    <div className={styles.chatContent}>
+                      {messages.map((msg) => (
                         <div
-                          className={`p-3 rounded-lg max-w-xs ${
-                            msg.sender === "user" ? "bg-gray-50 text-black" : "text-black"
-                          }`}
+                          key={msg.id}
+                          className={`flex max-w-full ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
                         >
-                          {msg.text}
+                          <div
+                            className={`p-3 rounded-lg max-w-xs ${
+                              msg.sender === "user" ? "bg-gray-50 text-black" : "text-black"
+                            }`}
+                          >
+                            {msg.text}
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
 
                   <div className="mt-auto flex gap-4">
                     <div className="flex text-sm text-gray-500 p-4 bg-gray-50 rounded-lg outline outline-1 outline-gray-200 w-full">
-                      <form className="w-full">
-                        <input type="text" placeholder="Ask me about any stock or market trend..." className="w-full outline-none" />
+                      <form className="w-full" onSubmit={handleSubmit}>
+                        <input 
+                          type="text" 
+                          value={inputValue}
+                          onChange={(e) => setInputValue(e.target.value)}
+                          placeholder="Ask me about any stock or market trend..." 
+                          className="w-full outline-none bg-transparent" 
+                        />
                       </form>
                     </div>
-                    <img src="/chatSendButton.svg" alt="SendChat" className="w-10 h-full cursor-pointer" />
+                    <img 
+                      src="/chatSendButton.svg" 
+                      alt="SendChat" 
+                      onClick={handleSendClick}
+                      className="w-10 h-full cursor-pointer" 
+                    />
                   </div>
                 </div>
               </div>

@@ -23,7 +23,7 @@ export function StockGraph({chartData}: {chartData: any}) {
       </div>
       
       <p className="text-muted-foreground p-5">
-        <MainChart chartData={chartData}/>
+        {chartData ? <MainChart chartData={chartData} /> : <p>Loading chart data...</p>}
       </p>
     </div>
   )

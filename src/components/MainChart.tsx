@@ -46,26 +46,59 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export default async function MainChart({
-  chartData,
-}: {
-  chartData: ChartDataPoint[];
-}) {
-  const [activeChart, setActiveChart] = React.useState<"desktop" | "mobile">(
-    "desktop"
-  );
-
+export default function MainChart() {
+  const [activeChart, setActiveChart] = React.useState<"desktop" | "mobile">("desktop");
+  const [chartData, setChartData] = React.useState<ChartDataPoint[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
   const { hoveredTimestamp } = useChart();
 
-  console.log("Chart hoveredTimestamp:", hoveredTimestamp); // Debug log
+  React.useEffect(() => {
+    async function fetchChartData() {
+      try {
+        setIsLoading(true);
+        // Replace this with your actual data fetching logic
+        const response = await fetch('/api/chart-data');
+        const data = await response.json();
+        setChartData(data);
+      } catch (error) {
+        console.error('Failed to fetch chart data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
 
-  const total = React.useMemo(
-    () => ({
-      desktop: chartData.reduce((acc, curr) => acc + curr.desktop, 0),
-      mobile: chartData.reduce((acc, curr) => acc + curr.mobile, 0),
-    }),
-    []
-  );
+    fetchChartData();
+  }, []);
+
+  const total = React.useMemo(() => {
+    if (!chartData || chartData.length === 0) {
+      return { desktop: 0, mobile: 0 };
+    }
+    return {
+      desktop: chartData.reduce((acc, curr) => acc + (curr.desktop || 0), 0),
+      mobile: chartData.reduce((acc, curr) => acc + (curr.mobile || 0), 0),
+    };
+  }, [chartData]);
+
+  if (isLoading) {
+    return (
+      <Card>
+        <CardContent className="px-2 sm:p-6 flex items-center justify-center min-h-[300px]">
+          <p className="text-muted-foreground">Loading chart data...</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (!chartData || chartData.length === 0) {
+    return (
+      <Card>
+        <CardContent className="px-2 sm:p-6 flex items-center justify-center min-h-[300px]">
+          <p className="text-muted-foreground">No data available</p>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="">
