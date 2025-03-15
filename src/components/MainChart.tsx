@@ -1,7 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
+import { CartesianGrid, Line, LineChart, ReferenceDot, ReferenceLine, XAxis, Label } from "recharts"
+
 
 import {
   Card,
@@ -16,7 +17,15 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-const chartData = [
+import { useChart } from "@/context/ChartContext"
+
+type ChartDataPoint = {
+  date: string;
+  desktop: number;
+  mobile: number;
+};
+
+const chartData: ChartDataPoint[] = [
   { date: "2024-04-01", desktop: 222, mobile: 150 },
   { date: "2024-04-02", desktop: 97, mobile: 180 },
   { date: "2024-04-03", desktop: 167, mobile: 120 },
@@ -116,17 +125,21 @@ const chartConfig = {
   },
   desktop: {
     label: "Desktop",
-    color: "hsl(var(--chart-1))",
+    color: "#0369a1",
   },
   mobile: {
     label: "Mobile",
-    color: "hsl(var(--chart-2))",
+    color: "#475569",
   },
 } satisfies ChartConfig
 
 export default function MainChart() {
   const [activeChart, setActiveChart] =
-    React.useState<keyof typeof chartConfig>("desktop")
+    React.useState<"desktop" | "mobile">("desktop")
+
+  const { hoveredTimestamp } = useChart();
+
+  console.log("Chart hoveredTimestamp:", hoveredTimestamp); // Debug log
 
   const total = React.useMemo(
     () => ({
@@ -141,7 +154,7 @@ export default function MainChart() {
       <CardContent className="px-2 sm:p-6">
         <ChartContainer
           config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
+          className="aspect-auto h-[250px] min-h-[300px] w-full"
         >
           <LineChart
             accessibilityLayer
@@ -151,6 +164,7 @@ export default function MainChart() {
               right: 12,
             }}
           >
+           
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="date"
@@ -185,12 +199,47 @@ export default function MainChart() {
               dataKey={activeChart}
               type="monotone"
               stroke={`var(--color-${activeChart})`}
-              strokeWidth={2}
+              strokeWidth={1}
               dot={false}
             />
+            
+            {hoveredTimestamp && (
+              <>
+                <ReferenceLine 
+                  x={hoveredTimestamp}
+                  stroke="rgb(205, 205, 205)"
+                  strokeWidth={1}
+                /> 
+                <ReferenceDot
+                  x={hoveredTimestamp}
+                  y={chartData.find(d => d.date === hoveredTimestamp)?.[activeChart] || 0}
+                  r={4}
+                  fill={`var(--color-${activeChart})`}
+                  stroke={`var(--color-${activeChart})`}
+                  strokeWidth={2}
+                >
+                </ReferenceDot>
+              </>
+            )}
           </LineChart>
         </ChartContainer>
       </CardContent>
     </Card>
   )
 }
+
+const CustomTooltip = ({ value, date }: { value: number, date: string }) => {
+  return (
+    <div className="bg-white p-2 rounded-lg shadow-lg border border-gray-200">
+      <div className="text-sm font-medium">
+        {new Date(date).toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+        })}
+      </div>
+      <div className="text-lg font-bold">
+        {value} views
+      </div>
+    </div>
+  );
+};
