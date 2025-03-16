@@ -72,7 +72,7 @@ export function RecentInfluential({ news }: { news: News[] }) {
                 key={news._id}
                 id={news._id}
                 username={news.metadata.source}
-                content={news.page_content}
+                content={news.metadata.title}
                 date={news.metadata.publication_date}
                 significance={news.metadata.importance.toUpperCase()}
                 avatarUrl=""
