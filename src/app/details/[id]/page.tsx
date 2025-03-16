@@ -1,20 +1,20 @@
 "use client";
-import { StockGraph } from "@/components/StockGraph"
-import { RecentInfluential } from "@/components/RecentInfluential"
-import { SearchBar } from "@/components/SearchBar"
-import { StockChips } from "@/components/StockChips"
-import ColorPalette from "@/components/ColorPalette"
-import TopGainer from "@/components/TopGainer"
-import { FlipCard } from "@/components/FlipCard"
-import { Divide } from "lucide-react"
-import { PopularityGraph } from "@/components/PopularityGraph"
+import { StockGraph } from "@/components/StockGraph";
+import { RecentInfluential } from "@/components/RecentInfluential";
+import { SearchBar } from "@/components/SearchBar";
+import { StockChips } from "@/components/StockChips";
+import ColorPalette from "@/components/ColorPalette";
+import TopGainer from "@/components/TopGainer";
+import { FlipCard } from "@/components/FlipCard";
+import { Divide } from "lucide-react";
+import { PopularityGraph } from "@/components/PopularityGraph";
 import { FloatingWidget } from "@/components/FloatingWidget";
 import { use, useEffect, useState } from "react";
 import { getStockCandles } from "../../alphavantage_actions";
 import { useParams } from "next/navigation";
 import { mockStockData } from "@/data/mockStocks";
-import { getNews } from "../actions";
 import { News } from "@/components/RecentInfluential";
+import { fetchDetails } from "./actions";
 
 export const topGainer = {
   ticker: "AAPL", // Stock ticker
@@ -28,27 +28,41 @@ export const topGainer = {
   reason: "Apple announced record iPhone sales", // Key reason for the price movement
 };
 
+type StockData = {
+  id: string;
+  companyName: string;
+  stockPrice: number | undefined;
+  priceChange: number;
+  percentChange: number;
+  popularityRate: number;
+  mentions: number;
+  searchVolume: number;
+  sentimentPercentage: number;
+  positiveSentimentPercentage: number;
+  negativeSentimentPercentage: number;
+  chartData: { date: string; value: number }[];
+  news: News[]; // Assuming news is an array of strings (e.g., URLs or headlines)
+};
+
 export default function Home() {
   const params = useParams();
-  const stockId = Number(params.id);
-  const stockData = mockStockData.find(stock => stock.id === stockId);
+  const stockId = String(params.id);
+  const stockData = mockStockData.find((stock) => stock.id === 2);
 
   // Fetch data from the API
-  const [chartData, setChartData] = useState([]);
+  const [chartData, setChartData] = useState<StockData>();
 
   const [news, setNews] = useState<News[]>([]);
- 
-   useEffect(() => {
-     getStockCandles("IBM").then((data) => {
-       console.log(data);
-       setChartData(data);
-     });
- 
-     getNews("AAPL").then((data) => {
-       console.log(data);
-       setNews(data);
-     });
-   }, []);
+
+  useEffect(() => {
+    fetchDetails(stockId).then((data) => {
+      if (!data) {
+        return;
+      }
+      console.log(data);
+      setChartData(data);
+    });
+  }, []);
 
   return (
     <div className="min-h-screen">
@@ -62,8 +76,29 @@ export default function Home() {
               {/* Stock Graph Section */}
               <div className="mt-8 h-[600px]">
                 <FlipCard
-                  front={<StockGraph companyName={stockData?.companyName} stockPrice={stockData?.stockPrice} priceChange={stockData?.priceChange} percentChange={stockData?.percentChange} chartData={stockData?.chartData} hasShuffle={true} />}
-                  back={<PopularityGraph companyName={stockData?.companyName} popularityRate={stockData?.popularityRate} mentions={stockData?.mentions} serachVolume={stockData?.serachVolume} sentimentPercentage={stockData?.sentimentPercentage} />}
+                  front={
+                    stockData && (
+                      <StockGraph
+                        companyName={stockData?.companyName}
+                        stockPrice={stockData?.stockPrice}
+                        priceChange={stockData?.priceChange}
+                        percentChange={stockData?.percentChange}
+                        chartData={stockData?.chartData}
+                        hasShuffle={true}
+                      />
+                    )
+                  }
+                  back={
+                    stockData && (
+                      <PopularityGraph
+                        companyName={stockData?.companyName}
+                        popularityRate={stockData?.popularityRate}
+                        mentions={stockData?.mentions}
+                        searchVolume={stockData?.searchVolume}
+                        sentimentPercentage={stockData?.sentimentPercentage}
+                      />
+                    )
+                  }
                 />
               </div>
             </div>
@@ -71,7 +106,15 @@ export default function Home() {
 
           {/* Recent Influential Section - Takes up 4 columns on large screens */}
           <div className="lg:col-span-4 p-8 lg:pl-0">
-            <RecentInfluential news={news} positiveSentimentPercentage={stockData?.positiveSentimentPercentage} negativeSentimentPercentage={stockData?.negativeSentimentPercentage} />
+            <RecentInfluential
+              news={news}
+              positiveSentimentPercentage={
+                stockData?.positiveSentimentPercentage || 0
+              }
+              negativeSentimentPercentage={
+                stockData?.negativeSentimentPercentage || 0
+              }
+            />
           </div>
 
           <FloatingWidget />

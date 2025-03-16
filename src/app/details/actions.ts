@@ -19,3 +19,4 @@ export async function getNews(): Promise<News[]> {
 
   return news;
 }
+

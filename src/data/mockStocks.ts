@@ -2,26 +2,28 @@ export const mockStockData = [
   {
     id: 1,
     companyName: "Apple Inc.",
-    stockPrice: 180.25,
-    priceChange: 8.50,
-    percentChange: 4.95,
-    popularityRate: 92,
-    mentions: 15420,
-    searchVolume: 850000,
-    sentimentPercentage: 78,
-    positiveSentimentPercentage: 78,
-    negativeSentimentPercentage: 22,
-    chartData: [
+    stockPrice: 180.25, // done
+    priceChange: 8.50, // done
+    percentChange: 4.95, // done
+    popularityRate: 92, //fake 
+    mentions: 15420, // done
+    searchVolume: 850000, // fake
+    sentimentPercentage: 78, // done
+    positiveSentimentPercentage: 78, // done
+    negativeSentimentPercentage: 22, // done
+    chartData: [ // Done
       { date: "2024-01-01", value: 170 },
       { date: "2024-01-02", value: 172 },
       { date: "2024-01-03", value: 175 },
       { date: "2024-01-04", value: 178 },
       { date: "2024-01-05", value: 180.25 },
-    ]
+    ],
+    news: [] // Done
   },
   {
     id: 2,
     companyName: "Tesla Inc.",
+
     stockPrice: 675.30,
     priceChange: -15.20,
     percentChange: -2.20,
