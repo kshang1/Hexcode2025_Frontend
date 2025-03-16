@@ -80,16 +80,17 @@ export function RecentInfluential({
           <h2 className="text-xl font-bold mb-6">Recent Influential</h2>
           <div className="overflow-y-scroll max-h-[340px]">
             <div className="flex relative">
-              <div className="flex-1 flex flex-col gap-8 pt-2">
+              <div className="flex-1 flex flex-col gap-8 pt-2 overflow-x-hidden">
                 {news.map((news) => (
                   <NewsCard
                     key={news._id}
                     id={news._id}
-                    username={news.metadata.source}
-                    content={news.page_content}
+                    username={news.metadata.event}
+                    content={news.metadata.key_observations}
                     date={news.metadata.publication_date}
                     significance={news.metadata.importance.toUpperCase()}
                     avatarUrl=""
+                    source={news.metadata.source}
                   />
                 ))}
               </div>

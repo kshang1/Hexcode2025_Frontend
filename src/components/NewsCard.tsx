@@ -11,22 +11,22 @@ interface NewsCardProps {
   date: string;  // Format: YYYY-MM-DD to match with the chart data
   significance: string; //use LOW, MEDIUM, HIGH
   avatarUrl: string;
-
+  source: string;
 }
 
-export function NewsCard({ id, username, content, date, avatarUrl, significance }: NewsCardProps) {
+export function NewsCard({ id, username, content, date, avatarUrl, significance, source }: NewsCardProps) {
   const { hoveredTimestamp, setHoveredTimestamp } = useChart();
   const [currentlyHovered, setCurrentlyHovered] = useState<string | null>(null);
-
+  console.log("Date passed:", date);
   // Format the display date for UI
-  const formatDisplayDate = (dateStr: string) => {
-    const date = new Date(dateStr);
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
-  };
+  // const formatDisplayDate = (dateStr: string) => {
+  //   const formattedDate = new Date(dateStr);
+  //   return formattedDate.toLocaleDateString("en-US", {
+  //     month: "short",
+  //     day: "numeric",
+  //     year: "numeric",
+  //   });
+  // };
 
 
   return (
@@ -65,9 +65,13 @@ export function NewsCard({ id, username, content, date, avatarUrl, significance 
           <div className={`h-2 w-2 rounded-full ${significance === "LOW" ? "bg-green-500" : significance === "MEDIUM" ? "bg-yellow-500" : "bg-red-500"}`}></div>
         </div>
         <p className="text-sm text-muted-foreground">{content}</p>
-        <div className="flex items-center gap-2 text-muted-foreground">
+        <div className="flex items-center gap-2 text-muted-foreground mt-3">
           <CalendarDays className="h-4 w-4" />
-          <span className="text-xs">{formatDisplayDate(date)}</span>
+          <span className="text-xs">{date}</span>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold">{source}</span>
+          </div>
+          
         </div>
       </div>
     </div>
