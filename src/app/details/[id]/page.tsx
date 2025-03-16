@@ -57,8 +57,10 @@ export default function Home() {
     fetchDetails(stockId).then((data) => {
       if (!data) {
         return;
+      }else{
+        console.log(data);
       }
-      console.log(data);
+      console.log("fetched data", data);
       setStockData(data);
       setNews(data.news);
     });
@@ -80,9 +82,9 @@ export default function Home() {
                     stockData && (
                       <StockGraph
                         companyName={stockData?.companyName}
-                        stockPrice={stockData?.stockPrice || 0}
-                        priceChange={stockData?.priceChange}
-                        percentChange={stockData?.percentChange}
+                        stockPrice={(stockData?.stockPrice || 0).toFixed(2)}
+                        priceChange={stockData?.priceChange?.toFixed(2)}
+                        percentChange={stockData?.percentChange?.toFixed(2)}
                         chartData={stockData?.chartData}
                         hasShuffle={true}
                       />
