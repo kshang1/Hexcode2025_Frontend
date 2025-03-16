@@ -19,7 +19,8 @@ export type News = {
   };
 };
 
-export function RecentInfluential({ news }: { news: News[] }{positiveSentimentPercentage, negativeSentimentPercentage}: {positiveSentimentPercentage: number, negativeSentimentPercentage: number}) {
+export function RecentInfluential({ news, positiveSentimentPercentage, negativeSentimentPercentage }: { news: News[], positiveSentimentPercentage: number, negativeSentimentPercentage: number }) {
+  console.log("recent influential news", news);
   const sentimentBreakdown = [
     {
       percentage: 35,
@@ -68,8 +69,8 @@ export function RecentInfluential({ news }: { news: News[] }{positiveSentimentPe
               <NewsCard
                 key={news._id}
                 id={news._id}
-                username={news.metadata.source}
-                content={news.metadata.title}
+                username={news.metadata.event}
+                content={news.metadata.key_observations.replace(/\./g, '.\n')}
                 date={news.metadata.publication_date}
                 significance={news.metadata.importance.toUpperCase()}
                 avatarUrl=""
