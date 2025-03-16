@@ -13,6 +13,8 @@ import { use, useEffect, useState } from "react";
 import { getStockCandles } from "../../alphavantage_actions";
 import { useParams } from "next/navigation";
 import { mockStockData } from "@/data/mockStocks";
+import { getNews } from "../actions";
+import { News } from "@/components/RecentInfluential";
 
 export const topGainer = {
   ticker: "AAPL", // Stock ticker
@@ -33,13 +35,20 @@ export default function Home() {
 
   // Fetch data from the API
   const [chartData, setChartData] = useState([]);
-  
-  // useEffect(() => {
-  //   getStockCandles("IBM").then((data) => {
-  //     console.log(data);
-  //     setChartData(data);
-  //   });
-  // }, []);
+
+  const [news, setNews] = useState<News[]>([]);
+ 
+   useEffect(() => {
+     getStockCandles("IBM").then((data) => {
+       console.log(data);
+       setChartData(data);
+     });
+ 
+     getNews().then((data) => {
+       console.log(data);
+       setNews(data);
+     });
+   }, []);
 
   return (
     <div className="min-h-screen">
@@ -62,7 +71,7 @@ export default function Home() {
 
           {/* Recent Influential Section - Takes up 4 columns on large screens */}
           <div className="lg:col-span-4 p-8 lg:pl-0">
-            <RecentInfluential positiveSentimentPercentage={stockData?.positiveSentimentPercentage} negativeSentimentPercentage={stockData?.negativeSentimentPercentage} />
+            <RecentInfluential news={news} positiveSentimentPercentage={stockData?.positiveSentimentPercentage} negativeSentimentPercentage={stockData?.negativeSentimentPercentage} />
           </div>
 
           <FloatingWidget />
