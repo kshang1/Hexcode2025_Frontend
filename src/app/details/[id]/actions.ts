@@ -5,6 +5,40 @@ import { News } from "@/components/RecentInfluential";
 import { DataAPIClient } from "@datastax/astra-db-ts";
 import { StockData } from "./page";
 
+export async function searchStocks(query: string) {
+  try {
+    const rest = restClient(process.env.NEXT_PUBLIC_POLYGON_API_KEY);
+    const searchResults = await rest.reference.tickers({
+      search: query,
+      market: "stocks",
+      active: true,
+      limit: 5
+    });
+
+    if (!searchResults.results) {
+      return [];
+    }
+
+    // Get details for each stock found
+    const stockDetails = await Promise.all(
+      searchResults.results.map(async (stock) => {
+        try {
+          const details = await fetchDetails(stock.ticker);
+          return details;
+        } catch (error) {
+          console.error(`Error fetching details for ${stock.ticker}:`, error);
+          return null;
+        }
+      })
+    );
+
+    return stockDetails.filter(stock => stock !== null);
+  } catch (error) {
+    console.error('Error searching stocks:', error);
+    return [];
+  }
+}
+
 export async function fetchDetails(ticker: string): Promise<StockData> {
   let stock_data;
   try {
