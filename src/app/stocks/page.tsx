@@ -6,7 +6,6 @@ import TopNews from "@/components/TopNews"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 
-// ... your existing data ...
 
 export default function StocksPage() {
   const router = useRouter();

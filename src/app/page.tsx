@@ -10,8 +10,6 @@ import { useState } from "react";
 import { SearchBar } from "@/components/SearchBar"
 import { mockStockData } from "@/data/mockStocks";
 
-const params = useParams();
-const stockId = Number(params.id);  
 
 export const topShifts = [
   { ticker: "AAPL", name: "Apple Inc.", change: "+3.2%", sentiment: "🟢 Bullish (67%)" },
