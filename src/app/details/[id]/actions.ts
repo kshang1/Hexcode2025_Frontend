@@ -1,29 +1,33 @@
+"use server";
 
-// import { restClient } from "@polygon.io/client-js";
+import { restClient } from "@polygon.io/client-js";
 import { News } from "@/components/RecentInfluential";
 import { DataAPIClient } from "@datastax/astra-db-ts";
+import { StockData } from "./page";
 
-export async function fetchDetails(ticker: string) {
-  const stock_data = await getStockCandles(ticker);
-  const news = await getNews(ticker);
-
-  if (!stock_data) {
-    return null;
+export async function fetchDetails(ticker: string): Promise<StockData> {
+  let stock_data;
+  try {
+    stock_data = await getStockCandles(ticker);
+  } catch (e) {
+    console.error(e);
   }
+
+  const news = await getNews(ticker);
 
   return {
     id: ticker,
     companyName: ticker,
-    stockPrice: stock_data.stock_price,
-    priceChange: stock_data.price_change,
-    percentChange: stock_data.percent_change,
+    stockPrice: stock_data?.stock_price,
+    priceChange: stock_data?.price_change ?? 0,
+    percentChange: stock_data?.percent_change ?? 0,
     popularityRate: 92,
     mentions: news.mentions,
     searchVolume: 850000,
     sentimentPercentage: news.positiveSentiment,
     positiveSentimentPercentage: news.positiveSentiment,
     negativeSentimentPercentage: news.negativeSentiment,
-    chartData: stock_data.chart_data,
+    chartData: stock_data?.chart_data ?? [],
     news: news.news,
   };
 }
@@ -34,6 +38,11 @@ async function getNews(ticker: string) {
   );
   const database = client.db(process.env.ASTRA_DB_API_ENDPOINT as string);
   const table = database.collection<News>("prototype_db_v2");
+
+  console.log(
+    process.env.ASTRA_DB_API_ENDPOINT,
+    process.env.ASTRA_DB_APPLICATION_TOKEN
+  );
 
   const cursor = table.find({ "metadata.ticker": ticker });
 

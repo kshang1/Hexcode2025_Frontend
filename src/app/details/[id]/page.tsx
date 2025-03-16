@@ -28,7 +28,7 @@ export const topGainer = {
   reason: "Apple announced record iPhone sales", // Key reason for the price movement
 };
 
-type StockData = {
+export type StockData = {
   id: string;
   companyName: string;
   stockPrice: number | undefined;
@@ -47,10 +47,9 @@ type StockData = {
 export default function Home() {
   const params = useParams();
   const stockId = String(params.id);
-  const stockData = mockStockData.find((stock) => stock.id === 2);
 
   // Fetch data from the API
-  const [chartData, setChartData] = useState<StockData>();
+  const [stockData, setStockData] = useState<StockData>();
 
   const [news, setNews] = useState<News[]>([]);
 
@@ -60,7 +59,7 @@ export default function Home() {
         return;
       }
       console.log(data);
-      setChartData(data);
+      setStockData(data);
     });
   }, []);
 
@@ -80,7 +79,7 @@ export default function Home() {
                     stockData && (
                       <StockGraph
                         companyName={stockData?.companyName}
-                        stockPrice={stockData?.stockPrice}
+                        stockPrice={stockData?.stockPrice || 0}
                         priceChange={stockData?.priceChange}
                         percentChange={stockData?.percentChange}
                         chartData={stockData?.chartData}
@@ -88,16 +87,14 @@ export default function Home() {
                       />
                     )
                   }
-                  back={
-                    stockData && (
-                      <PopularityGraph
-                        companyName={stockData?.companyName}
-                        popularityRate={stockData?.popularityRate}
-                        mentions={stockData?.mentions}
-                        searchVolume={stockData?.searchVolume}
-                        sentimentPercentage={stockData?.sentimentPercentage}
-                      />
-                    )
+                  back={ stockData &&
+                    <PopularityGraph
+                      companyName={stockData?.companyName}
+                      popularityRate={stockData?.popularityRate}
+                      mentions={stockData?.mentions}
+                      searchVolume={stockData?.searchVolume}
+                      sentimentPercentage={stockData?.sentimentPercentage}
+                    />
                   }
                 />
               </div>
