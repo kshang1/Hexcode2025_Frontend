@@ -5,6 +5,9 @@ export async function getStockCandles(symbol: string) {
   );
 
   const data = await response.json();
+  if (!data.results) {
+    return null
+  }
   const chartData = data.results.map((candle: any) => {
     return {
       date: candle.t,

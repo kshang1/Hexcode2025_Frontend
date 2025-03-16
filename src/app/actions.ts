@@ -10,7 +10,7 @@ const client = new DataAPIClient(process.env.ASTRA_DB_APPLICATION_TOKEN);
 
 const db1 = client.db(process.env.ASTRA_DB_API_ENDPOINT as string)
 
-export async function getSummary(message: String) {
+export async function getSummary(message: string) {
     try {
 
         const endpoint = FLOW_ID
