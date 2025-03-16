@@ -1,0 +1,89 @@
+import { restClient } from "@polygon.io/client-js";
+import { News } from "@/components/RecentInfluential";
+import { DataAPIClient } from "@datastax/astra-db-ts";
+
+export async function fetchDetails(ticker: string) {
+  const stock_data = await getStockCandles(ticker);
+  const news = await getNews(ticker);
+
+  if (!stock_data) {
+    return null;
+  }
+
+  return {
+    id: ticker,
+    companyName: ticker,
+    stockPrice: stock_data.stock_price,
+    priceChange: stock_data.price_change,
+    percentChange: stock_data.percent_change,
+    popularityRate: 92,
+    mentions: news.mentions,
+    searchVolume: 850000,
+    sentimentPercentage: news.positiveSentiment,
+    positiveSentimentPercentage: news.positiveSentiment,
+    negativeSentimentPercentage: news.negativeSentiment,
+    chartData: stock_data.chart_data,
+    news: news.news,
+  };
+}
+
+async function getNews(ticker: string) {
+  const client = new DataAPIClient(
+    process.env.ASTRA_DB_APPLICATION_TOKEN as string
+  );
+  const database = client.db(process.env.ASTRA_DB_API_ENDPOINT as string);
+  const table = database.collection<News>("prototype_db_v2");
+
+  const cursor = table.find({ "metadata.ticker": ticker });
+
+  let news: News[] = await cursor.toArray();
+  console.log(news);
+
+  const mentions = news.length;
+  const positiveSentiment =
+    (news.filter((n) => n.metadata.sentiment === "Positive").length /
+      mentions) *
+    100;
+  const negativeSentiment =
+    (news.filter((n) => n.metadata.sentiment === "Negative").length /
+      mentions) *
+    100;
+
+  return {
+    mentions: mentions,
+    positiveSentiment: positiveSentiment,
+    negativeSentiment: negativeSentiment,
+    news: news,
+  };
+}
+
+async function getStockCandles(ticker: string) {
+  const rest = restClient(process.env.NEXT_PUBLIC_POLYGON_API_KEY);
+  const stock_data = await rest.stocks.aggregates(
+    ticker,
+    1,
+    "day",
+    "2023-01-01",
+    "2023-04-14"
+  );
+  console.log(stock_data);
+
+  if (!stock_data.results) {
+    return null;
+  }
+
+  return {
+    chart_data: stock_data.results.map((candle: any) => {
+      return {
+        date: new Date(candle.t).toISOString(),
+        value: candle.c,
+      };
+    }),
+    stock_price: stock_data.results[0].c,
+    price_change: stock_data.results[0].c!! - stock_data.results[1].c!!,
+    percent_change:
+      ((stock_data.results[0].c!! - stock_data.results[1].c!!) /
+        stock_data.results[1].c!!) *
+      100,
+  };
+}
