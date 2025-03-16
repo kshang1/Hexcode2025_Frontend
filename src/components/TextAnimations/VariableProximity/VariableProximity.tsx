@@ -163,7 +163,7 @@ const VariableProximity = forwardRef<HTMLSpanElement, VariableProximityProps>((p
             className={className}
             {...restProps}
         >
-            {words.map((word, wordIndex) => (
+            {words.map((word: string, wordIndex: number) => (
                 <span
                     key={wordIndex}
                     className="inline-block whitespace-nowrap"

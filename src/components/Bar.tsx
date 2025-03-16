@@ -26,7 +26,7 @@ export function Bar({ segments, height = "h-3", className = "" }: BarProps) {
   return (
     <div className={`w-full ${height} flex overflow-hidden ${className}`}>
       {segments.map((segment, index) => (
-        <HoverCard openDelay={0.5} closeDelay={0.5}>
+        <HoverCard openDelay={0.5} closeDelay={0.5} key={index}>
           <HoverCardTrigger asChild>
             <div
             key={index}

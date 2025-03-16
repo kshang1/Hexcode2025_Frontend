@@ -11,7 +11,7 @@ export async function searchStocks(query: string) {
     const searchResults = await rest.reference.tickers({
       search: query,
       market: "stocks",
-      active: true,
+      active: "true",
       limit: 5
     });
 
@@ -80,7 +80,7 @@ async function getNews(ticker: string) {
 
   const cursor = table.find({ "metadata.ticker": ticker });
 
-  let news: News[] = await cursor.toArray();
+  const news: News[] = await cursor.toArray();
   console.log(news);
 
   const mentions = news.length;

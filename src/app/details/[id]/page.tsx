@@ -16,7 +16,7 @@ import { mockStockData } from "@/data/mockStocks";
 import { News } from "@/components/RecentInfluential";
 import { fetchDetails } from "./actions";
 
-export const topGainer = {
+const topGainer = {
   ticker: "AAPL", // Stock ticker
   name: "Apple Inc.", // Company name
   currentPrice: "$180.25", // Current stock price
@@ -62,7 +62,7 @@ export default function Home() {
       setStockData(data);
       setNews(data.news);
     });
-  }, []);
+  }, [stockId]);
 
   return (
     <div className="min-h-screen">

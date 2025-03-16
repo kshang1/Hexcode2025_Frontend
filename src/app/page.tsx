@@ -13,7 +13,7 @@ import { StockChips } from "@/components/StockChips";
 import { RecentInfluential } from "@/components/RecentInfluential";
 
 
-export const topShifts = [
+const topShifts = [
   { ticker: "AAPL", name: "Apple Inc.", change: "+3.2%", sentiment: "🟢 Bullish (67%)" },
   { ticker: "TSLA", name: "Tesla Inc.", change: "-1.5%", sentiment: "🔴 Bearish (54%)" },
   { ticker: "NVDA", name: "NVIDIA Corporation", change: "+5.1%", sentiment: "🟢 Very Bullish (78%)" },
@@ -21,7 +21,7 @@ export const topShifts = [
   { ticker: "MSFT", name: "Microsoft Corp.", change: "+4.6%", sentiment: "🟢 Bullish (72%)" },
 ];
 
-export const topLoser = {
+const topLoser = {
   ticker: "TSLA",                     // Stock ticker
   name: "Tesla Inc.",                 // Company name
   currentPrice: "$675.30",             // Current stock price
@@ -34,7 +34,7 @@ export const topLoser = {
 };
 
 
-export const topGainer = {
+const topGainer = {
   ticker: "AAPL",                     // Stock ticker
   name: "Apple Inc.",                 // Company name
   currentPrice: "$180.25",             // Current stock price
@@ -46,7 +46,7 @@ export const topGainer = {
   reason: "Apple announced record iPhone sales",  // Key reason for the price movement
 };
 
-export const topNews = {
+const topNews = {
   title: "Breaking Market News",
   newsTitle: "Apple Stock Hits New High Amid Strong iPhone Sales",
   newsContent: 
