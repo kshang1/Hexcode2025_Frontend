@@ -5,7 +5,7 @@ import { useChart } from "@/context/ChartContext"
 import { useEffect, useState } from "react"
 
 interface NewsCardProps {
-  id: number;
+  id: string;
   username: string;
   content: string;
   date: string;  // Format: YYYY-MM-DD to match with the chart data
@@ -16,7 +16,7 @@ interface NewsCardProps {
 
 export function NewsCard({ id, username, content, date, avatarUrl, significance }: NewsCardProps) {
   const { hoveredTimestamp, setHoveredTimestamp } = useChart();
-  const [currentlyHovered, setCurrentlyHovered] = useState<number | null>(null);
+  const [currentlyHovered, setCurrentlyHovered] = useState<string | null>(null);
 
   // Format the display date for UI
   const formatDisplayDate = (dateStr: string) => {

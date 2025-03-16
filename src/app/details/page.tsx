@@ -1,16 +1,17 @@
 "use client";
-import { StockGraph } from "@/components/StockGraph"
-import { RecentInfluential } from "@/components/RecentInfluential"
-import { SearchBar } from "@/components/SearchBar"
-import { StockChips } from "@/components/StockChips"
-import ColorPalette from "@/components/ColorPalette"
-import TopGainer from "@/components/TopGainer"
-import { FlipCard } from "@/components/FlipCard"
-import { Divide } from "lucide-react"
-import { PopularityGraph } from "@/components/PopularityGraph"
+import { StockGraph } from "@/components/StockGraph";
+import { RecentInfluential } from "@/components/RecentInfluential";
+import { SearchBar } from "@/components/SearchBar";
+import { StockChips } from "@/components/StockChips";
+import ColorPalette from "@/components/ColorPalette";
+import TopGainer from "@/components/TopGainer";
+import { FlipCard } from "@/components/FlipCard";
+import { Divide } from "lucide-react";
+import { PopularityGraph } from "@/components/PopularityGraph";
 import { FloatingWidget } from "@/components/FloatingWidget";
 import { use, useEffect, useState } from "react";
 import { getStockCandles } from "../alphavantage_actions";
+import { getNews } from "./actions";
 export const topGainer = {
   ticker: "AAPL", // Stock ticker
   name: "Apple Inc.", // Company name
@@ -22,17 +23,24 @@ export const topGainer = {
   sentimentSource: ["Twitter", "News", "Analyst Ratings"], // Sources of sentiment
   reason: "Apple announced record iPhone sales", // Key reason for the price movement
 };
+import { News } from "@/components/RecentInfluential";
 
 export default function Home() {
   // Fetch data from the API
   const [chartData, setChartData] = useState([]);
-  
-  // useEffect(() => {
-  //   getStockCandles("IBM").then((data) => {
-  //     console.log(data);
-  //     setChartData(data);
-  //   });
-  // }, []);
+  const [news, setNews] = useState<News[]>([]);
+
+  useEffect(() => {
+    getStockCandles("IBM").then((data) => {
+      console.log(data);
+      setChartData(data);
+    });
+
+    getNews().then((data) => {
+      console.log(data);
+      setNews(data);
+    });
+  }, []);
 
   return (
     <div className="min-h-screen">
@@ -55,7 +63,7 @@ export default function Home() {
 
           {/* Recent Influential Section - Takes up 4 columns on large screens */}
           <div className="lg:col-span-4 p-8 lg:pl-0">
-            <RecentInfluential />
+            <RecentInfluential news={news} />
           </div>
 
           <FloatingWidget />
