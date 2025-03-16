@@ -15,7 +15,7 @@ export async function getNews(): Promise<News[]> {
   const cursor = table.find({ "metadata.ticker": "AAPL" });
 
   let news: News[] = await cursor.toArray();
-  console.log(news);
+  console.log("news from actions", news);
 
   return news;
 }

@@ -17,7 +17,6 @@ interface NewsCardProps {
 export function NewsCard({ id, username, content, date, avatarUrl, significance, source }: NewsCardProps) {
   const { hoveredTimestamp, setHoveredTimestamp } = useChart();
   const [currentlyHovered, setCurrentlyHovered] = useState<string | null>(null);
-  console.log("Date passed:", date);
   // Format the display date for UI
   // const formatDisplayDate = (dateStr: string) => {
   //   const formattedDate = new Date(dateStr);
@@ -32,7 +31,7 @@ export function NewsCard({ id, username, content, date, avatarUrl, significance,
   return (
     <div 
       className={`flex items-start space-x-4 rounded-lg shadow-sm p-4 ${
-        currentlyHovered === id ? 'bg-accent' : ''
+        currentlyHovered === id ? 'bg-accent/40' : ''
       }`} 
       onMouseEnter={() => {
         setHoveredTimestamp(date);  // This will be in YYYY-MM-DD format
