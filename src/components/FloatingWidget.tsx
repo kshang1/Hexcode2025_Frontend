@@ -18,15 +18,29 @@ export const messages = [
 interface FloatingWidgetProps {
   isExpanded?: boolean;
   onClose?: () => void;
+  onOpen?: () => void;
 }
 
-export function FloatingWidget({ isExpanded: propIsExpanded, onClose }: FloatingWidgetProps) {
+export function FloatingWidget({ isExpanded: propIsExpanded, onClose, onOpen }: FloatingWidgetProps) {
   const [isExpandedInternal, setIsExpandedInternal] = useState(false);
   
   // Use either prop-controlled or internal state
   const isExpanded = propIsExpanded ?? isExpandedInternal;
+
+  const handleOpen = () => {
+    if (onOpen) {
+      // If we're in controlled mode, call the parent's handler
+      onOpen();
+    } else {
+      // If we're in uncontrolled mode, use internal state
+      setIsExpandedInternal(true);
+    }
+  };
+
   const handleClose = () => {
-    onClose?.();
+    if (onClose) {
+      onClose();
+    }
     setIsExpandedInternal(false);
   };
 
@@ -61,15 +75,17 @@ export function FloatingWidget({ isExpanded: propIsExpanded, onClose }: Floating
 
   return (
     <>
-      <div className="fixed bottom-6 right-6 pointer-events-auto z-10">
-        <div
-          onClick={() => setIsExpandedInternal(true)}
-          className="bg-white rounded-lg shadow-lg p-4 w-[200px] hover:shadow-xl transition-shadow cursor-pointer"
-        >
-          <h3 className="font-semibold mb-2">StockSage</h3>
-          <div className="text-sm text-gray-600">Get Stock Insights</div>
+      {!isExpanded && (
+        <div className="fixed bottom-6 right-6 pointer-events-auto z-10">
+          <div
+            onClick={handleOpen}
+            className="bg-white rounded-lg shadow-lg p-4 w-[200px] hover:shadow-xl transition-shadow cursor-pointer"
+          >
+            <h3 className="font-semibold mb-2">StockSage</h3>
+            <div className="text-sm text-gray-600">Get Stock Insights</div>
+          </div>
         </div>
-      </div>
+      )}
 
       <AnimatePresence>
         {isExpanded && (

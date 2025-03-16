@@ -57,7 +57,7 @@ export default function MainChart({ cd }: { cd: any }) {
 
   React.useEffect(() => {
     getStockCandles("IBM").then((data) => {
-      console.log(data);
+      console.log("IBM data fetched:", data);
       setChartData(data);
       setIsLoading(false);
     });
@@ -117,6 +117,7 @@ export default function MainChart({ cd }: { cd: any }) {
               minTickGap={32}
               tickFormatter={(value) => {
                 const date = new Date(value);
+                
                 return date.toLocaleDateString("en-US", {
                   month: "short",
                   day: "numeric",
@@ -129,7 +130,9 @@ export default function MainChart({ cd }: { cd: any }) {
                   className="w-[150px]"
                   nameKey="views"
                   labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString("en-US", {
+                   
+                    const date = new Date(value);
+                    return date.toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
                       year: "numeric",

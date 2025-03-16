@@ -4,10 +4,14 @@ import { StockGraph } from "@/components/StockGraph"
 import { Overview } from "@/components/Overview"
 import TopGainer from "@/components/TopGainer"
 import TopNews from "@/components/TopNews"
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { FloatingWidget } from "@/components/FloatingWidget";
 import { useState } from "react";
 import { SearchBar } from "@/components/SearchBar"
+import { mockStockData } from "@/data/mockStocks";
+
+const params = useParams();
+const stockId = Number(params.id);  
 
 export const topShifts = [
   { ticker: "AAPL", name: "Apple Inc.", change: "+3.2%", sentiment: "🟢 Bullish (67%)" },
@@ -54,13 +58,29 @@ export const topNews = {
 
 
 export default function StocksPage() {
-  //router setup
   const router = useRouter();
-  const toDetails = () => {
-    router.push("/details");
+  const [isWidgetExpanded, setIsWidgetExpanded] = useState(false);
+  const [currentStockIndex, setCurrentStockIndex] = useState(0);
+
+  const handleWidgetOpen = () => {
+    setIsWidgetExpanded(true);
   };
 
-  const [isWidgetExpanded, setIsWidgetExpanded] = useState(false);
+  const handleWidgetClose = () => {
+    setIsWidgetExpanded(false);
+  };
+
+  const handleReshuffle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const nextIndex = (currentStockIndex + 1) % mockStockData.length;
+    setCurrentStockIndex(nextIndex);
+  };
+
+  const currentStock = mockStockData[currentStockIndex];
+
+  const handleStockClick = () => {
+    router.push(`/details/${currentStock.id}`);
+  };
 
   return (
     <div className="container mx-auto py-6 space-y-6">
@@ -71,17 +91,27 @@ export default function StocksPage() {
 
       <SearchBar />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* First row */}
         <div className="lg:col-span-2">
           <div className="flex items-center justify-between align-end">
             <div className="text-xl font-bold">Trending Now</div>
-            <div className="flex items-center gap-1 cursor-pointer content-end">
-              <img src="/shuffle.svg" alt="Positive" className="w-4 h-4 mt-0.5" />
+            <div 
+              className="flex items-center gap-1 cursor-pointer content-end hover:opacity-80"
+              onClick={handleReshuffle}
+            >
+              <img src="/shuffle.svg" alt="Shuffle" className="w-4 h-4 mt-0.5" />
               <div className="text-xs text-muted-foreground">Reshuffle</div>
             </div>
           </div>
-          <div className="cursor-pointer" onClick={toDetails}> 
-            <StockGraph chartData={[]} hasShuffle={false} />
+          <div className="cursor-pointer" onClick={handleStockClick}> 
+            <StockGraph 
+              key={currentStock.id}
+              companyName={currentStock.companyName}
+              stockPrice={currentStock.stockPrice}
+              priceChange={currentStock.priceChange}
+              percentChange={currentStock.percentChange}
+              chartData={currentStock.chartData}
+              hasShuffle={false}
+            />
           </div>
         </div>
 
@@ -89,7 +119,7 @@ export default function StocksPage() {
           <Overview title="Top Sentiment Shifts"/>
           <div 
             className="rounded-lg h-1/2 shadow-md flex flex-col items-start justify-center p-4 cursor-pointer" 
-            onClick={() => setIsWidgetExpanded(true)}
+            onClick={handleWidgetOpen}
           >
             <div className="text-4xl font-bold text-black w-full">Ask StockSage.</div>
             <div className="text-sm text-muted-foreground mt-3">
@@ -97,22 +127,25 @@ export default function StocksPage() {
             </div>
           </div>
         </div>
-        <FloatingWidget isExpanded={isWidgetExpanded} onClose={() => setIsWidgetExpanded(false)}/>
-   
+       
 
-        {/* Second row */}
-        <div className="cursor-pointer" onClick={toDetails}>
+        <div className="cursor-pointer" onClick={handleStockClick}>
           <TopGainer title="Top Gainers" data={topGainer} />
           
         </div>
-        <div className="cursor-pointer" onClick={toDetails}>
+        <div className="cursor-pointer" onClick={handleStockClick}>
           <TopGainer title="Top Losers" data={topLoser} />
         </div>
         <div>
           <TopNews title="Top News" newsTitle={topNews.newsTitle} newsContent={topNews.newsContent} />
         </div>
       </div>
-
+      <FloatingWidget 
+        isExpanded={isWidgetExpanded} 
+        onClose={handleWidgetClose}
+        onOpen={handleWidgetOpen}
+      />
+   
     </div>
   )
 } 
