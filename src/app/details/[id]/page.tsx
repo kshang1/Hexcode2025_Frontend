@@ -60,6 +60,7 @@ export default function Home() {
       }
       console.log(data);
       setStockData(data);
+      setNews(data.news);
     });
   }, []);
 
