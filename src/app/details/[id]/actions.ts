@@ -1,4 +1,5 @@
-import { restClient } from "@polygon.io/client-js";
+
+// import { restClient } from "@polygon.io/client-js";
 import { News } from "@/components/RecentInfluential";
 import { DataAPIClient } from "@datastax/astra-db-ts";
 
