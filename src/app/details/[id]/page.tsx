@@ -71,7 +71,7 @@ export default function Home() {
           <div className="lg:col-span-8 p-8">
             <div className="space-y-6">
               <SearchBar />
-              <StockChips />
+              {/* <StockChips /> */}
               {/* Stock Graph Section */}
               <div className="mt-8 h-[600px]">
                 <FlipCard
@@ -118,7 +118,7 @@ export default function Home() {
 
           {/* Related Stocks Section */}
           <div className="lg:col-span-12 px-8">
-            <h2 className="text-xl font-semibold mb-4 text-end">
+            <h2 className="text-xl font-semibold mb-4 text-start">
               Scroll down to see related stocks ↓
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

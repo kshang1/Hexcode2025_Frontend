@@ -9,6 +9,8 @@ import { FloatingWidget } from "@/components/FloatingWidget";
 import { useState } from "react";
 import { SearchBar } from "@/components/SearchBar"
 import { mockStockData } from "@/data/mockStocks";
+import { StockChips } from "@/components/StockChips";
+import { RecentInfluential } from "@/components/RecentInfluential";
 
 
 export const topShifts = [
@@ -58,7 +60,7 @@ export const topNews = {
 export default function StocksPage() {
   const router = useRouter();
   const [isWidgetExpanded, setIsWidgetExpanded] = useState(false);
-  const [currentStockIndex, setCurrentStockIndex] = useState(0);
+  const [selectedStockId, setSelectedStockId] = useState<number>(1); // Default to first stock
 
   const handleWidgetOpen = () => {
     setIsWidgetExpanded(true);
@@ -68,13 +70,8 @@ export default function StocksPage() {
     setIsWidgetExpanded(false);
   };
 
-  const handleReshuffle = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    const nextIndex = (currentStockIndex + 1) % mockStockData.length;
-    setCurrentStockIndex(nextIndex);
-  };
-
-  const currentStock = mockStockData[currentStockIndex];
+  // Get the current stock data
+  const currentStock = mockStockData.find(stock => stock.id === selectedStockId) ?? mockStockData[0];
 
   const handleStockClick = () => {
     router.push(`/details/${currentStock.id}`);
@@ -88,16 +85,18 @@ export default function StocksPage() {
       </div>
 
       <SearchBar />
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <div className="flex items-center justify-between align-end">
             <div className="text-xl font-bold">Trending Now</div>
             <div 
               className="flex items-center gap-1 cursor-pointer content-end hover:opacity-80"
-              onClick={handleReshuffle}
             >
-              <img src="/shuffle.svg" alt="Shuffle" className="w-4 h-4 mt-0.5" />
-              <div className="text-xs text-muted-foreground">Reshuffle</div>
+              <StockChips 
+                selectedStockId={selectedStockId} 
+                onStockSelect={(id) => setSelectedStockId(id ?? 1)} 
+              />
             </div>
           </div>
           <div className="cursor-pointer" onClick={handleStockClick}> 
